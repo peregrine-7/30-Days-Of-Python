@@ -1,0 +1,21 @@
+import webbrowser
+import requests
+import json
+import statistics
+
+romeo_and_juliet = 'http://www.gutenberg.org/files/1112/1112.txt'
+
+story = requests.get(romeo_and_juliet)
+
+cats_api = 'https://api.thecatapi.com/v1/breeds'
+
+response = requests.get(cats_api)
+
+data = response.text
+cats = json.loads(data)
+weight = []
+for cat in cats:
+    line = cat["weight"]["metric"].split('-')
+    weight.append((int(line[0]) + int(line[1])) / 2)
+
+print(min(weight), max(weight), statistics.stdev(weight), statistics.median(weight))
